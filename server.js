@@ -1,34 +1,35 @@
-// server.js
-// where your node app starts
-
-// we've started you off with Express (https://expressjs.com/)
-// but feel free to use whatever libraries or frameworks you'd like through `package.json`.
 const express = require("express");
 const app = express();
 
-// our default array of dreams
-const dreams = [
-  "Find and count some sheep",
-  "Climb a really tall mountain",
-  "Wash the dishes"
-];
+const Discord = require('discord.js')
+const client = new Discord.Client()
 
-// make all the files in 'public' available
-// https://expressjs.com/en/starter/static-files.html
 app.use(express.static("public"));
 
-// https://expressjs.com/en/starter/basic-routing.html
-app.get("/", (request, response) => {
-  response.sendFile(__dirname + "/views/index.html");
-});
+client.on('ready', () => {
+  console.log(`Logged in as ${client.user.tag}!`)
+})
 
-// send the default array of dreams to the webpage
-app.get("/dreams", (request, response) => {
-  // express helps us take JS objects and send them as JSON
-  response.json(dreams);
-});
+client.on('message', async msg => {
+  try {
+    const id = require.resolve('./handlers/message')
+    delete require.cache[id]
+    await require(id)(msg, { client })
+  } catch (error) {
+    console.error(
+      'Cannot process message',
+      msg.content,
+      'from',
+      msg.author.tag,
+      'in',
+      msg.channel,
+      error,
+    )
+  }
+})
 
-// listen for requests :)
 const listener = app.listen(process.env.PORT, () => {
   console.log("Your app is listening on port " + listener.address().port);
 });
+
+client.login(process.env.DISCORD_TOKEN)
