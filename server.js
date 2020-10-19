@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const live = require('uncache')(require);
 
 const Discord = require('discord.js')
 const client = new Discord.Client()
@@ -12,9 +13,7 @@ client.on('ready', () => {
 
 client.on('message', async msg => {
   try {
-    const id = require.resolve('./handlers/message')
-    delete require.cache[id]
-    await require(id)(msg, { client })
+    await live('./hot/handlers').onMessage(msg, { client })
   } catch (error) {
     console.error(
       'Cannot process message',
