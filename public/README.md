@@ -3,6 +3,13 @@ ow Discord Bot
 
 **ow Discord Bot** is a simple Discord bot that lets _everyone_ in your server create a custom Discord commands using a simple HTTP endpoint.
 
+!> This bot is under development; it does not work yet!
+
+The goal of this project is to:
+
+- allow _anyone_ to add custom commands to your Discord server, to foster a community of tinkering.
+- let people who uses shared hosting and serverless environments to create simple bots.
+
 ## Usage reference
 
 ### Adding the bot
