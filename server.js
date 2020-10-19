@@ -18,11 +18,12 @@ client.on('message', async msg => {
   } catch (error) {
     console.error(
       'Cannot process message',
-      msg.content,
+      msg.id,
       'from',
       msg.author.tag,
       'in',
-      msg.channel,
+      msg.channel && msg.channel.name,
+      msg.channel && msg.channel.guild && msg.channel.guild.name,
       error,
     )
   }

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="//unpkg.com/docsify-themeable@0.7.2/dist/css/theme-simple.css">
+  <title>ow: An Outgoing Webhook Bot for Discord</title>
+  <!-- Primary Meta Tags -->
+  <meta name="title" content="ow Discord Bot">
+  <meta name="description" content="A Discord bot that lets everyone create a custom command with a simple HTTP endpoint!">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ow: An Outgoing Webhook Bot for Discord">
+  <meta property="og:description" content="A Discord bot that lets everyone create a custom command with a simple HTTP endpoint!">
+  <meta property="og:image" content="https://capture.the.spacet.me/eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJodHRwczovL293LWRpc2NvcmQtYm90LmdsaXRjaC5tZS8_MSIsIndpZHRoIjoxMjAwLCJoZWlnaHQiOjYzMCwiZGV2aWNlU2NhbGVGYWN0b3IiOjEsImlzcyI6ImR0aW50aCJ9.OohVe0hQAA6pJqZ2BbpgyJ_USgHcLNUOZWHJuN1MSS08KOyKnb2eDwACtleDNjrGxBOH_N2Bw1Z_o1-wh0s1ULshvLX35xbuWwNF81J2d7Tk7rneTxwNHIKwzksjSoNnZk96hOXoD9fzRJLxn4eZeIe6LtRzYod79zCgnr1vT_j5dyrj5hCWKUPYWOK-sZzHVEiedkPhVAMhVlNf9Ra4VommCzKDspTUg3gLR28RZgOxP32VSxTQhy3N5gYpqj82ogJY0hgQ7rhZ2_c0b-zxnus3h8y92sbZ_eRLYqRyGzRweqAmJuldPECCW6kv05gzF2qKoI_HnuB69Ny1QYwuwQ.png">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="ow: An Outgoing Webhook Bot for Discord">
+  <meta property="twitter:description" content="A Discord bot that lets everyone create a custom command with a simple HTTP endpoint!">
+  <meta property="twitter:image" content="https://capture.the.spacet.me/eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJodHRwczovL293LWRpc2NvcmQtYm90LmdsaXRjaC5tZS8_MSIsIndpZHRoIjoxMjAwLCJoZWlnaHQiOjYzMCwiZGV2aWNlU2NhbGVGYWN0b3IiOjEsImlzcyI6ImR0aW50aCJ9.OohVe0hQAA6pJqZ2BbpgyJ_USgHcLNUOZWHJuN1MSS08KOyKnb2eDwACtleDNjrGxBOH_N2Bw1Z_o1-wh0s1ULshvLX35xbuWwNF81J2d7Tk7rneTxwNHIKwzksjSoNnZk96hOXoD9fzRJLxn4eZeIe6LtRzYod79zCgnr1vT_j5dyrj5hCWKUPYWOK-sZzHVEiedkPhVAMhVlNf9Ra4VommCzKDspTUg3gLR28RZgOxP32VSxTQhy3N5gYpqj82ogJY0hgQ7rhZ2_c0b-zxnus3h8y92sbZ_eRLYqRyGzRweqAmJuldPECCW6kv05gzF2qKoI_HnuB69Ny1QYwuwQ.png">
+
+  <style>
+    :root {
+      --theme-hue: 341;
+      --link-color: #A60035;
+    }
+    .chat-bubbles {
+      display: flex;
+      flex-direction: column;
+      border: 2px solid var(--sidebar-border-color);
+      padding: 24px;
+    }
+    .chat-bubbles > .bubble {
+      margin: 10px 0;
+      border-radius: 20px;
+      padding: 10px 20px;
+    }
+    .chat-bubbles > .bubble > small {
+      opacity: 0.9;
+    }
+    .chat-bubbles > .bubble:last-child {
+      margin-bottom: 0;
+    }
+    .chat-bubbles > .bubble:first-child {
+      margin-top: 0;
+    }
+    .chat-bubbles > .bubble.-me {
+      background: #BDF387;
+      align-self: flex-end;
+    }
+    .chat-bubbles > .bubble.-you {
+      background: #E4E8EB;
+      align-self: flex-start;
+    }
+    .chat-bubbles > .bubble.-clickable {
+      cursor: pointer;
+    }
+    .loading-logo {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 20vw;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <svg class="loading-logo" width="238" height="142" viewBox="0 0 238 142" xmlns="http://www.w3.org/2000/svg">
+      <g fill="none" fill-rule="evenodd">
+        <path d="M27.238 105.032l-4.501 3.174 5.465.424 43.843 2.656 5.332 19.9-72.21-9.536L.74 105.127l57.768-44.364L63.82 80.59l-36.582 24.442zm136.987-51.424l-5.293-19.753 73.292 9.168 4.466 16.67-58.869 44.658-5.313-19.827 38.3-25.374 4.086-2.669-4.8-.288-45.87-2.585z" fill="#DA3567"/>
+        <path fill="#A60035" d="M128.82 8.375l22.952 7.017-38.593 126.233-22.951-7.017z"/>
+        <path fill="#FFF" d="M133.468 17.116l9.563 2.924-8.186 26.776-9.563-2.923z"/>
+        <path fill="#E296AD" d="M101.989 23.984l-8.052 6.933-.605-10.608-9.082-5.514 9.901-3.854L96.59.599l6.725 8.226 10.589-.876-5.745 8.937 4.105 9.8zM67.03 26.743l-7.682 5.679 1.737-9.393-5.678-7.68 9.392 1.736 7.68-5.678-1.736 9.392 5.679 7.68zM42.616 40.389l.068 8.103-5.58-5.876-8.104.068 5.876-5.58L34.808 29l5.58 5.876 8.104-.068z"/>
+      </g>
+    </svg>
+  </div>
+  <script src="https://embed.runkit.com"></script>
+  <script>
+    window.$docsify = {
+      plugins: [
+        function(hook, vm) {
+          hook.init(function() {
+            // Called when the script starts running, only trigger once, no arguments,
+          });
+
+          hook.beforeEach(function(content) {
+            // Invoked each time before parsing the Markdown file.
+            // ...
+            return content;
+          });
+
+          hook.afterEach(function(html, next) {
+            // Invoked each time after the Markdown file is parsed.
+            // beforeEach and afterEach support asynchronous。
+            // ...
+            // call `next(html)` when task is done.
+            next(html);
+          });
+
+          hook.doneEach(function() {
+            // Invoked each time after the data is fully loaded, no arguments,
+            // ...
+          });
+
+          hook.mounted(function() {
+            // Called after initial completion. Only trigger once, no arguments.
+          });
+
+          hook.ready(function() {
+            // Called after initial completion, no arguments.
+            var el = document.getElementById("runkitEmbed");
+            if (el) {
+              var source = RunKit.sourceFromElement(el);
+              el.innerHTML = "";
+              RunKit.createNotebook({
+                source: source,
+                element: el,
+                mode: 'endpoint',
+                preamble: "const { createEndpoint } = require('@runkit/dtinth/post-endpoint-utils/branches/master')\nconst fetch = require('node-fetch')\n",
+                onURLChanged: function(notebook) {
+                  var text = document.getElementById("endpointText");
+                  text.innerHTML = notebook.endpointURL;
+                  var msg = `/post set-url ${notebook.endpointURL}`
+                  document.querySelector('#sendLink').innerHTML = `<a href="line://oaMessage/%40605xwmmj/?${encodeURIComponent(msg)}" target="_blank">Send</a>`
+                }
+              })
+            }
+          });
+        }
+      ]
+    }
+    var docsUtils = {
+      // https://stackoverflow.com/questions/36639681/how-to-copy-text-from-a-div-to-clipboard
+      copy(id) {
+        var range = document.createRange();
+        range.selectNode(document.getElementById(id));
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        document.execCommand("copy");
+      }
+    }
+  </script>
+  <script src="//unpkg.com/docsify@4.9.4/lib/docsify.min.js"></script>
+  <script src="//unpkg.com/docsify-copy-code@2.1.0/dist/docsify-copy-code.min.js"></script>
+  <script src="//unpkg.com/docsify-themeable@0.7.2/dist/js/docsify-themeable.min.js"></script>
+  <script src="//unpkg.com/prismjs@1.17.1/components/prism-php.min.js"></script>
+
+  <!-- include the Glitch button to show what the webpage is about and
+        to make it easier for folks to view source and remix -->
+  <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
+  <script src="https://button.glitch.me/button.js"></script>
+</body>
+</html>
