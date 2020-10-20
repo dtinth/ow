@@ -1,4 +1,5 @@
-const dbMap = require('../lib/dbMap')
+const db = require('../lib/db')
+const live = require('uncache')(require)
 
 exports.onMessage = async (message, { client }) => {
   if (message.author.id === client.user.id) {
@@ -18,11 +19,7 @@ exports.onMessage = async (message, { client }) => {
 
   const parts = message.content.substr(prefix.length).split(/\s+/)
   if (parts[0] === 'ow') {
-    if (parts[1] === 'register') {
-      message.reply('Register!')
-      return
-    }
-    message.reply('Unrecognized command. See documentation: https://ow.wonderful.software/')
+    await live('./ow')({ parts, message, client })
     return
   }
 }
