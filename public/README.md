@@ -78,6 +78,10 @@ message {
   member {
     displayHexColor
     displayName
+    roles {
+      id
+      name
+    }
     user {
       id
       tag

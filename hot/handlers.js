@@ -64,6 +64,10 @@ exports.onMessage = async ({ message, client, hot, privateKey }) => {
       member: {
         displayHexColor: true,
         displayName: true,
+        roles: roles => roles.cache.map(role => pick(role, {
+          name: true,
+          id: true
+        })),
         user: {
           id: true,
           tag: true,
@@ -91,6 +95,7 @@ exports.onMessage = async ({ message, client, hot, privateKey }) => {
 
 function pick(thing, schema) {
   if (schema === true) return thing
+  if (typeof schema === 'function') return schema(thing)
   if (Array.isArray(thing)) {
     return thing.map(el => pick(el, schema))
   }
