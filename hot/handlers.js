@@ -1,7 +1,6 @@
 const db = require('../lib/db')
-const live = require('uncache')(require)
 
-exports.onMessage = async (message, { client }) => {
+exports.onMessage = async ({ message, client, hotContext }) => {
   if (message.author.id === client.user.id) {
     return
   }
