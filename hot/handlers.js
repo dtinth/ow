@@ -1,3 +1,5 @@
+const dbMap = require('../lib/dbMap')
+
 exports.onMessage = async (message, { client }) => {
   if (message.author.id === client.user.id) {
     return
