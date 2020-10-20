@@ -60,6 +60,33 @@ mFV+YJRCWaWIxy4NgqD0IVMRVZWkW51z4SN7+1F4ikTaTUrFh8n6JH+x2XUgTs2G
 -----END PUBLIC KEY-----
 ```
 
+The request will contain a JSON payload (`Content-Type: application/json`), and contains some fields of the Discord.js [`Message`](https://discord.js.org/#/docs/main/stable/class/Message) object graph.
+
+```
+{
+  content
+  createdTimestamp
+  embeds
+  member {
+    displayHexColor
+    displayName
+    user {
+      id
+      tag
+      username
+    }
+  }
+  channel {
+    id
+    name
+    guild {
+      id
+      name
+    }
+  }
+}
+```
+
 ## About this bot
 
 ### Source code
