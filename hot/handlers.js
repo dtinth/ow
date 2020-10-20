@@ -19,7 +19,7 @@ exports.onMessage = async (message, { client }) => {
 
   const parts = message.content.substr(prefix.length).split(/\s+/)
   if (parts[0] === 'ow') {
-    await live('./ow')({ parts, message, client })
+    await live('./ow')({ prefix, parts, message, client })
     return
   }
 }
