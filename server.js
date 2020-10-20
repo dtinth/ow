@@ -1,9 +1,10 @@
 const express = require("express");
 const app = express();
-const { HotContext } = require('./lib/hot')
+const { createHot } = require('./lib/hot')
 
 const Discord = require('discord.js')
 const client = new Discord.Client()
+const privateKey = require('fs').readFileSync('.data/jwtRS256.key', 'utf8')
 
 app.use(express.static("public"));
 
@@ -14,7 +15,7 @@ client.on('ready', () => {
 client.on('message', async msg => {
   try {
     const hot = createHot()
-    await hot(require, './hot/handlers').onMessage({ message: msg, client, hotContext })
+    await hot(require, './hot/handlers').onMessage({ message: msg, client, hot, privateKey })
   } catch (error) {
     console.error(
       'Cannot process message',

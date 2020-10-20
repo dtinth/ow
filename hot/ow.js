@@ -1,8 +1,8 @@
 const db = require('../lib/db')
-const live = require('uncache')(require)
+const axios = require('axios')
 
-module.exports = async ({ prefix, message, parts, client }) => {
-  const { tryParseCommandName, tryParseUrl } = live('./utils')
+module.exports = async ({ prefix, message, parts, client, hot }) => {
+  const { tryParseCommandName, tryParseUrl } = hot(require, './utils')
   if (parts[1] === 'register') {
     if (parts.length !== 4) {
       message.reply(`Usage: ${prefix}ow register <command-name> <url>`)
@@ -28,14 +28,15 @@ module.exports = async ({ prefix, message, parts, client }) => {
     }
     const docId = `guild/${message.channel.guild.id}/commands/${commandName}`
     const existingCommand = await db.get(docId).catch(e => null)
-    if (existingCommand && existingCommand.owner !== message.author.id) {
+    if (existingCommand && existingCommand.owner && existingCommand.owner !== message.author.id) {
       message.reply('This command name is already registered by someone else. Please pick another name.')
       return
     }
     await db.put({
       _id: docId,
-      _rev: existingCommand && existingCommand.rev,
+      _rev: existingCommand && existingCommand._rev,
       type: 'command',
+      owner: message.author.id,
       guildId: message.channel.guild.id,
       commandName: commandName,
       url: String(url),
