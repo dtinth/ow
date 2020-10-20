@@ -3,7 +3,7 @@ ow Discord Bot
 
 **ow Discord Bot** is a simple Discord bot that lets _everyone_ in your server create a custom Discord commands using a simple HTTP endpoint.
 
-!> This bot is under development; it does not work yet!
+!> This bot is in **BETA**; while it is fairly usable now, it is not guaranteed to always work!
 
 The goal of this project is to:
 
@@ -62,10 +62,15 @@ mFV+YJRCWaWIxy4NgqD0IVMRVZWkW51z4SN7+1F4ikTaTUrFh8n6JH+x2XUgTs2G
 
 The request will contain a JSON payload (`Content-Type: application/json`).
 
-- The `text` key contains the text stripping the prefix.
-- The `message` key contains some fields of the Discord.js [`Message`](https://discord.js.org/#/docs/main/stable/class/Message) object graph.
+| Properties | Description |
+| --- | --- |
+| `text` | The message text without the prefix. |
+| `message` | A selection of fields from Discord.js [`Message`](https://discord.js.org/#/docs/main/stable/class/Message) object graph |
+
+Property list:
 
 ```
+text
 message {
   content
   createdTimestamp
